@@ -6,9 +6,15 @@ import Head from 'next/head'
 
 import styles from '../styles/Home.module.css'
 import { api } from "../services/apiClient"
+import { useCan } from "../hooks/useCan"
+import { Can } from "../components/Can"
 
 function Dashboard () {
   const { user } = useContext(AuthContext)
+
+  const userCanSeeMetrics = useCan({
+    permissions: ['metrics.list']
+  })
 
   useEffect(() => {
     api.get('/me')
@@ -23,6 +29,12 @@ function Dashboard () {
       </Head>
 
       <h1>Dashboard for: { user?.email }</h1>
+
+      <Can permissions={['metrics.list']}>
+        <div>
+          <h2>Métricas</h2>
+        </div>
+      </Can>
     </div>
   )
 }
